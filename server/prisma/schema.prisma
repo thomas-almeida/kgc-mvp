@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  username String  @unique
+  name     String
+  password String
+  picture  String?
+
+  userTeamId String?   @db.ObjectId
+  userTeam   UserTeam? @relation(fields: [userTeamId], references: [id])
+
+  packs Packs[]
+}
+
+model UserTeam {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  picture String?
+
+  squad    UserTeamSquad[]
+  reserves UserTeamReserves[]
+
+  users User[]
+}
+
+model UserTeamSquad {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  userTeamId String @db.ObjectId
+  playerId   String @db.ObjectId
+
+  userTeam UserTeam @relation(fields: [userTeamId], references: [id])
+  player   Player   @relation(fields: [playerId], references: [id])
+}
+
+model UserTeamReserves {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  userTeamId String @db.ObjectId
+  playerId   String @db.ObjectId
+
+  userTeam UserTeam @relation(fields: [userTeamId], references: [id])
+  player   Player   @relation(fields: [playerId], references: [id])
+}
+
+model Packs {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  content Player[]
+
+  userId String? @db.ObjectId
+  user   User?   @relation(fields: [userId], references: [id])
+}
+
+model Player {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  position     String
+  overall      Int
+  games        Int
+  goals        Int
+  assistants   Int
+  yellowCards  Int
+  redCards     Int
+  picture      String?
+  physics      Int
+  duels        Int
+  shootsOnGoal Int
+  defenses     Int
+  pass         Int
+  hability     Int
+
+  teamId String? @db.ObjectId
+  team   Team?   @relation(fields: [teamId], references: [id])
+
+  packsId String? @db.ObjectId
+  packs   Packs?  @relation(fields: [packsId], references: [id])
+
+  squad    UserTeamSquad[]
+  reserves UserTeamReserves[]
+}
+
+model President {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  picture String?
+
+  teamId String @unique @db.ObjectId
+  team   Team   @relation(fields: [teamId], references: [id])
+}
+
+model Team {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  picture String?
+
+  players     Player[]
+  president   President?
+  presidentId String?    @db.ObjectId
+}
