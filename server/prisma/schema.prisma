@@ -103,5 +103,6 @@ model Team {
 
   players     Player[]
   president   President?
+  teamUrl     String?
   presidentId String?    @db.ObjectId
 }
