@@ -8,11 +8,12 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  username String  @unique
-  name     String
-  password String
-  picture  String?
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  username  String  @unique
+  name      String
+  googleSub String? @unique
+  email     String
+  picture   String?
 
   userTeamId String?   @db.ObjectId
   userTeam   UserTeam? @relation(fields: [userTeamId], references: [id])

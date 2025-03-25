@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "npm run dev",
+    "dev": "node src/index.js",
     "db": "npx prisma db push"
   },
   "keywords": [],
@@ -15,8 +15,12 @@
     "@prisma/client": "^6.5.0",
     "axios": "^1.8.4",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "puppeteer": "^24.4.0"
   },
   "devDependencies": {
